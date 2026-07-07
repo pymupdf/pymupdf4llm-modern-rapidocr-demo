@@ -99,3 +99,22 @@ chinese_bank_cashflow.md          f8bf15442bafc1dbe0997ec73ac72c4ab20b0287a2bd17
 dongxing_mining_report.md         84e8a4b66603cac99c84b680cf6a7f5ca14c39e4f36acfff988c4af96a112869
 galaxy_securities_disclaimer.md   43336c289f3e79ba653ffa629d0b55f9109d7cbd4b2bc675ee8c17fb56c5c45b
 ```
+
+## GitHub Actions Matrix
+
+The compatibility workflow verifies the sample parser across this matrix:
+
+```text
+Operating systems: ubuntu-latest, windows-latest, macos-latest
+Python versions:   3.10, 3.11, 3.12, 3.13, 3.14
+```
+
+The workflow checks that the parser runs successfully, generates non-empty
+Markdown for every included sample, selects this compatibility OCR hook, uses
+modern `rapidocr`, and does not install `rapidocr_onnxruntime`.
+
+Verified run:
+
+```text
+https://github.com/pymupdf/pymupdf4llm-modern-rapidocr-demo/actions/runs/28900293247
+```
