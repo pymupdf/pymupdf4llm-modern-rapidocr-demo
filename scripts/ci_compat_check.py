@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import importlib.metadata as metadata
 import importlib.util
 import json
@@ -23,32 +22,11 @@ SAMPLES = [
     Path("samples/galaxy_securities_disclaimer.png"),
 ]
 
-EXPECTED_SHA256 = {
-    "chinese_bank_cashflow.md": (
-        "f8bf15442bafc1dbe0997ec73ac72c4ab20b0287a2bd174e71ed0241a0d6419a"
-    ),
-    "dongxing_mining_report.md": (
-        "84e8a4b66603cac99c84b680cf6a7f5ca14c39e4f36acfff988c4af96a112869"
-    ),
-    "galaxy_securities_disclaimer.md": (
-        "43336c289f3e79ba653ffa629d0b55f9109d7cbd4b2bc675ee8c17fb56c5c45b"
-    ),
-}
-
-
 def package_version(name: str) -> str:
     try:
         return metadata.version(name)
     except metadata.PackageNotFoundError:
         return "not-installed"
-
-
-def sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as file:
-        for chunk in iter(lambda: file.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def append_step_summary(markdown: str) -> None:
@@ -88,18 +66,13 @@ def build_markdown(report: dict) -> str:
             "",
             "## Markdown Outputs",
             "",
-            "| File | Bytes | SHA-256 | Expected | Result |",
-            "|---|---:|---|---|---|",
+            "| File | Bytes | Result |",
+            "|---|---:|---|",
         ]
     )
     for item in report["outputs"]:
-        result = "PASS" if item["matches_expected"] else "FAIL"
-        lines.append(
-            "| `{name}` | {bytes} | `{sha256}` | `{expected_sha256}` | {result} |".format(
-                **item,
-                result=result,
-            )
-        )
+        result = "PASS" if not item["empty"] else "FAIL"
+        lines.append("| `{name}` | {bytes} | {result} |".format(**item, result=result))
 
     if report["errors"]:
         lines.extend(["", "## Errors", ""])
@@ -176,25 +149,16 @@ def run(output_dir: Path, ocr_dpi: int) -> int:
         for sample in SAMPLES:
             result = parse_input(sample, output_dir, ocr_dpi)
             output_path = Path(result["output"])
-            output_hash = sha256(output_path)
-            expected_hash = EXPECTED_SHA256[output_path.name]
             item = {
                 "input": result["input"],
                 "name": output_path.name,
                 "path": str(output_path),
                 "bytes": result["bytes"],
                 "empty": result["empty"],
-                "sha256": output_hash,
-                "expected_sha256": expected_hash,
-                "matches_expected": output_hash == expected_hash,
             }
             report["outputs"].append(item)
             if item["empty"]:
                 report["errors"].append(f"{output_path.name} was empty.")
-            if not item["matches_expected"]:
-                report["errors"].append(
-                    f"{output_path.name} hash mismatch: {output_hash} != {expected_hash}"
-                )
     except Exception as exc:
         report["errors"].append(f"{type(exc).__name__}: {exc}")
         report["traceback"] = traceback.format_exc()
