@@ -53,8 +53,8 @@ The repo includes three sample inputs:
 
 ```text
 samples/chinese_bank_cashflow.png
-samples/mixed_workbook_page.jpg
-samples/notes_handwritten_mixed.jpg
+samples/dongxing_mining_report.jpg
+samples/galaxy_securities_disclaimer.png
 ```
 
 ## Verified Locally
@@ -78,4 +78,24 @@ Result:
 
 ```text
 parsed=3 empty=0 output_dir=output
+```
+
+Python compatibility was checked on Linux x86_64 GNU with:
+
+```text
+Python 3.10.20
+Python 3.11.15
+Python 3.12.13
+Python 3.13.14
+Python 3.14.6
+```
+
+For the included samples, the generated Markdown files were byte-for-byte
+identical across all Python versions listed above. The output SHA-256 hashes
+were:
+
+```text
+chinese_bank_cashflow.md          f8bf15442bafc1dbe0997ec73ac72c4ab20b0287a2bd174e71ed0241a0d6419a
+dongxing_mining_report.md         84e8a4b66603cac99c84b680cf6a7f5ca14c39e4f36acfff988c4af96a112869
+galaxy_securities_disclaimer.md   43336c289f3e79ba653ffa629d0b55f9109d7cbd4b2bc675ee8c17fb56c5c45b
 ```

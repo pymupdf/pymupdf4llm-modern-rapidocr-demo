@@ -6,15 +6,15 @@
     "empty": false
   },
   {
-    "input": "samples/mixed_workbook_page.jpg",
-    "output": "output/mixed_workbook_page.md",
-    "bytes": 1652,
+    "input": "samples/dongxing_mining_report.jpg",
+    "output": "output/dongxing_mining_report.md",
+    "bytes": 2880,
     "empty": false
   },
   {
-    "input": "samples/notes_handwritten_mixed.jpg",
-    "output": "output/notes_handwritten_mixed.md",
-    "bytes": 1396,
+    "input": "samples/galaxy_securities_disclaimer.png",
+    "output": "output/galaxy_securities_disclaimer.md",
+    "bytes": 2600,
     "empty": false
   }
 ]
