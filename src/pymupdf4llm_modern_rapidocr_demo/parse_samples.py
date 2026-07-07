@@ -15,7 +15,7 @@ SUPPORTED_SUFFIXES = {".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp"}
 def parse_input(input_path: Path, output_dir: Path, ocr_dpi: int) -> dict:
     output_path = output_dir / f"{input_path.stem}.md"
     markdown = pymupdf4llm.to_markdown(str(input_path), ocr_dpi=ocr_dpi)
-    output_path.write_text(markdown or "", encoding="utf-8")
+    output_path.write_text(markdown or "", encoding="utf-8", newline="\n")
     return {
         "input": str(input_path),
         "output": str(output_path),
@@ -61,7 +61,7 @@ def main() -> None:
         for input_path in input_files
     ]
     summary_path = args.output_dir / "summary.json"
-    summary_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
+    summary_path.write_text(json.dumps(results, indent=2), encoding="utf-8", newline="\n")
 
     errors = [result for result in results if result["empty"]]
     print(f"parsed={len(results)} empty={len(errors)} output_dir={args.output_dir}")

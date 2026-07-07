@@ -202,9 +202,9 @@ def run(output_dir: Path, ocr_dpi: int) -> int:
     report["ok"] = not report["errors"]
     report_path = output_dir / "compatibility-report.json"
     summary_path = output_dir / "compatibility-summary.md"
-    report_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
+    report_path.write_text(json.dumps(report, indent=2), encoding="utf-8", newline="\n")
     summary = build_markdown(report)
-    summary_path.write_text(summary, encoding="utf-8")
+    summary_path.write_text(summary, encoding="utf-8", newline="\n")
     append_step_summary(summary)
     return 0 if report["ok"] else 1
 
