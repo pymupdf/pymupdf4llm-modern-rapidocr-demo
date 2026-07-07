@@ -1,0 +1,20 @@
+[
+  {
+    "input": "samples/apple_10k_page50.pdf",
+    "output": "output/apple_10k_page50.md",
+    "bytes": 3700,
+    "empty": false
+  },
+  {
+    "input": "samples/sizingchart_page1.pdf",
+    "output": "output/sizingchart_page1.md",
+    "bytes": 1241,
+    "empty": false
+  },
+  {
+    "input": "samples/test_page1.pdf",
+    "output": "output/test_page1.md",
+    "bytes": 6563,
+    "empty": false
+  }
+]
