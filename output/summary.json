@@ -1,20 +1,20 @@
 [
   {
-    "input": "samples/apple_10k_page50.pdf",
-    "output": "output/apple_10k_page50.md",
-    "bytes": 3700,
+    "input": "samples/chinese_bank_cashflow.png",
+    "output": "output/chinese_bank_cashflow.md",
+    "bytes": 1732,
     "empty": false
   },
   {
-    "input": "samples/sizingchart_page1.pdf",
-    "output": "output/sizingchart_page1.md",
-    "bytes": 1241,
+    "input": "samples/mixed_workbook_page.jpg",
+    "output": "output/mixed_workbook_page.md",
+    "bytes": 1652,
     "empty": false
   },
   {
-    "input": "samples/test_page1.pdf",
-    "output": "output/test_page1.md",
-    "bytes": 6563,
+    "input": "samples/notes_handwritten_mixed.jpg",
+    "output": "output/notes_handwritten_mixed.md",
+    "bytes": 1396,
     "empty": false
   }
 ]

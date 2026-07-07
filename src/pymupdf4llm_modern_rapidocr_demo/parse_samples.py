@@ -9,12 +9,15 @@ import pymupdf4llm
 from . import rapidocr_latest_compat
 
 
-def parse_pdf(pdf_path: Path, output_dir: Path, ocr_dpi: int) -> dict:
-    output_path = output_dir / f"{pdf_path.stem}.md"
-    markdown = pymupdf4llm.to_markdown(str(pdf_path), ocr_dpi=ocr_dpi)
+SUPPORTED_SUFFIXES = {".pdf", ".png", ".jpg", ".jpeg", ".tif", ".tiff", ".bmp"}
+
+
+def parse_input(input_path: Path, output_dir: Path, ocr_dpi: int) -> dict:
+    output_path = output_dir / f"{input_path.stem}.md"
+    markdown = pymupdf4llm.to_markdown(str(input_path), ocr_dpi=ocr_dpi)
     output_path.write_text(markdown or "", encoding="utf-8")
     return {
-        "input": str(pdf_path),
+        "input": str(input_path),
         "output": str(output_path),
         "bytes": output_path.stat().st_size,
         "empty": not bool(markdown),
@@ -28,7 +31,7 @@ def main() -> None:
         nargs="*",
         type=Path,
         default=[Path("samples")],
-        help="PDF file(s) or directories containing PDFs. Defaults to samples/.",
+        help="PDF/image file(s), or directories containing them. Defaults to samples/.",
     )
     parser.add_argument("--output-dir", type=Path, default=Path("output"))
     parser.add_argument("--ocr-dpi", type=int, default=150)
@@ -37,17 +40,26 @@ def main() -> None:
     rapidocr_latest_compat.install()
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    pdfs = []
+    input_files = []
     for input_path in args.inputs:
         if input_path.is_dir():
-            pdfs.extend(sorted(input_path.glob("*.pdf")))
-        elif input_path.suffix.lower() == ".pdf":
-            pdfs.append(input_path)
+            input_files.extend(
+                sorted(
+                    path
+                    for path in input_path.iterdir()
+                    if path.suffix.lower() in SUPPORTED_SUFFIXES
+                )
+            )
+        elif input_path.suffix.lower() in SUPPORTED_SUFFIXES:
+            input_files.append(input_path)
 
-    if not pdfs:
-        raise SystemExit("No PDF inputs found.")
+    if not input_files:
+        raise SystemExit("No supported PDF/image inputs found.")
 
-    results = [parse_pdf(pdf_path, args.output_dir, args.ocr_dpi) for pdf_path in pdfs]
+    results = [
+        parse_input(input_path, args.output_dir, args.ocr_dpi)
+        for input_path in input_files
+    ]
     summary_path = args.output_dir / "summary.json"
     summary_path.write_text(json.dumps(results, indent=2), encoding="utf-8")
 
