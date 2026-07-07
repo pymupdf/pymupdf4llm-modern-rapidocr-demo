@@ -16,13 +16,13 @@ Run the sample parser:
 uv run pymupdf4llm-modern-rapidocr-demo
 ```
 
-Or pass explicit PDFs/images:
+Or pass explicit documents/images:
 
 ```bash
 uv run pymupdf4llm-modern-rapidocr-demo path/to/file.png --output-dir output
 ```
 
-The demo defaults to `--ocr-dpi 150`, matching the benchmark configuration.
+The demo defaults to `--ocr-dpi 150`.
 The compatibility function itself keeps PyMuPDF4LLM's default OCR callback
 signature, where `dpi=300`; `to_markdown(..., ocr_dpi=150)` passes 150 into it.
 
@@ -49,17 +49,13 @@ existing PyMuPDF4LLM OCR insertion logic, then monkey-patches
 
 ## Included Samples
 
-The included samples are OmniDocBench page images where the old
-RapidOCR/Tesseract path produced visibly poor markdown and the modern RapidOCR
-path produced a better result:
+The repo includes three sample inputs:
 
 ```text
-samples/notes_handwritten_mixed.jpg
 samples/chinese_bank_cashflow.png
 samples/mixed_workbook_page.jpg
+samples/notes_handwritten_mixed.jpg
 ```
-
-They are intentionally kept as images, matching the benchmark source data.
 
 ## Verified Locally
 
